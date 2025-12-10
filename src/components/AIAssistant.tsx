@@ -201,14 +201,14 @@ Réponds de manière claire et utile, en limitant ta réponse à 3-4 phrases max
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-2xl transition-all duration-300 hover:scale-110 z-50 group"
+          className="fixed bottom-6 right-6 bg-green-600 hover:bg-green-700 text-white rounded-full p-4 shadow-2xl transition-all duration-300 hover:scale-110 z-50 group"
           aria-label="Ouvrir l'assistant IA"
         >
           <MessageCircle className="w-6 h-6" />
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
+          <span className="absolute -top-1 -right-1 bg-green-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
             1
           </span>
-          <span className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+          <span className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-green-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
             Besoin d'aide ?
           </span>
         </button>
@@ -218,14 +218,14 @@ Réponds de manière claire et utile, en limitant ta réponse à 3-4 phrases max
       {isOpen && (
         <div className="fixed bottom-6 right-6 w-96 h-[600px] bg-white rounded-2xl shadow-2xl flex flex-col z-50 border border-gray-200">
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 rounded-t-2xl flex items-center justify-between">
+          <div className="bg-gradient-to-r from-green-600 to-green-700 text-white p-4 rounded-t-2xl flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="bg-white/20 p-2 rounded-full">
                 <Bot className="w-5 h-5" />
               </div>
               <div>
                 <h3 className="font-semibold">Assistant MatrixConnect</h3>
-                <p className="text-xs text-blue-100">En ligne • Propulsé par Gemini AI</p>
+                <p className="text-xs text-green-100">En ligne • Propulsé par Gemini AI</p>
               </div>
             </div>
             <button
@@ -238,33 +238,33 @@ Réponds de manière claire et utile, en limitant ta réponse à 3-4 phrases max
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-white">
             {messages.map((message) => (
               <div
                 key={message.id}
                 className={`flex gap-3 ${message.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
               >
                 <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-                  message.role === 'user' ? 'bg-blue-600' : 'bg-gray-300'
+                  message.role === 'user' ? 'bg-green-600' : 'bg-gray-200'
                 }`}>
                   {message.role === 'user' ? (
                     <User className="w-4 h-4 text-white" />
                   ) : (
-                    <Bot className="w-4 h-4 text-gray-700" />
+                    <Bot className="w-4 h-4 text-green-700" />
                   )}
                 </div>
                 <div
                   className={`max-w-[75%] rounded-2xl p-3 ${
                     message.role === 'user'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-white text-gray-800 border border-gray-200'
+                      ? 'bg-green-600 text-white'
+                      : 'bg-green-50 text-gray-800 border border-green-200'
                   }`}
                 >
                   <p className="text-sm leading-relaxed whitespace-pre-wrap">
                     {message.content}
                   </p>
                   <span className={`text-xs mt-1 block ${
-                    message.role === 'user' ? 'text-blue-100' : 'text-gray-400'
+                    message.role === 'user' ? 'text-green-100' : 'text-gray-500'
                   }`}>
                     {message.timestamp.toLocaleTimeString('fr-FR', { 
                       hour: '2-digit', 
@@ -276,11 +276,11 @@ Réponds de manière claire et utile, en limitant ta réponse à 3-4 phrases max
             ))}
             {isLoading && (
               <div className="flex gap-3">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
-                  <Bot className="w-4 h-4 text-gray-700" />
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                  <Bot className="w-4 h-4 text-green-700" />
                 </div>
-                <div className="bg-white rounded-2xl p-3 border border-gray-200">
-                  <Loader2 className="w-5 h-5 text-gray-400 animate-spin" />
+                <div className="bg-green-50 rounded-2xl p-3 border border-green-200">
+                  <Loader2 className="w-5 h-5 text-green-600 animate-spin" />
                 </div>
               </div>
             )}
@@ -288,7 +288,7 @@ Réponds de manière claire et utile, en limitant ta réponse à 3-4 phrases max
           </div>
 
           {/* Input */}
-          <div className="p-4 border-t border-gray-200 bg-white rounded-b-2xl">
+          <div className="p-4 border-t border-green-200 bg-white rounded-b-2xl">
             <div className="flex gap-2">
               <input
                 ref={inputRef}
@@ -297,20 +297,20 @@ Réponds de manière claire et utile, en limitant ta réponse à 3-4 phrases max
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Posez votre question..."
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                className="flex-1 px-4 py-3 border border-green-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
                 disabled={isLoading}
               />
               <button
                 onClick={handleSend}
                 disabled={isLoading || !input.trim()}
-                className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white p-3 rounded-xl transition-colors"
+                className="bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white p-3 rounded-xl transition-colors"
                 aria-label="Envoyer"
               >
                 <Send className="w-5 h-5" />
               </button>
             </div>
             <p className="text-xs text-gray-400 mt-2 text-center">
-              L'IA peut faire des erreurs.
+              Propulsé par Google Gemini AI
             </p>
           </div>
         </div>
