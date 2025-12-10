@@ -1,0 +1,148 @@
+{
+  "heroSlides": [
+    {
+      "title": "Sécurité Managée MSSP",
+      "description": "Protection complète de votre infrastructure informatique avec notre service de sécurité managée 24/7",
+      "image": {
+        "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1920&q=80",
+        "imageAlt": "Sécurité Managée MSSP"
+      },
+      "ctaPrimary": {
+        "text": "Obtenir un Devis",
+        "url": "/contact"
+      },
+      "ctaSecondary": {
+        "text": "Nos Solutions",
+        "url": "/solutions"
+      }
+    },
+    {
+      "title": "La puissance du SD-WAN",
+      "description": "Optimisez votre réseau avec notre solution SD-WAN de nouvelle génération",
+      "image": {
+        "imageUrl": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80",
+        "imageAlt": "SD-WAN Technology"
+      },
+      "ctaPrimary": {
+        "text": "Obtenir un Devis",
+        "url": "/contact"
+      },
+      "ctaSecondary": {
+        "text": "Nos Solutions",
+        "url": "/solutions"
+      }
+    },
+    {
+      "title": "Infrastructure Cloud Hybride",
+      "description": "Déployez et gérez vos applications avec flexibilité grâce à notre expertise cloud",
+      "image": {
+        "imageUrl": "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1920&q=80",
+        "imageAlt": "Cloud Infrastructure"
+      },
+      "ctaPrimary": {
+        "text": "Obtenir un Devis",
+        "url": "/contact"
+      },
+      "ctaSecondary": {
+        "text": "Nos Solutions",
+        "url": "/solutions"
+      }
+    },
+    {
+      "title": "Support & Maintenance IT",
+      "description": "Bénéficiez d'un support technique expert disponible 24/7 pour votre entreprise",
+      "image": {
+        "imageUrl": "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=1920&q=80",
+        "imageAlt": "IT Support"
+      },
+      "ctaPrimary": {
+        "text": "Obtenir un Devis",
+        "url": "/contact"
+      },
+      "ctaSecondary": {
+        "text": "Nos Solutions",
+        "url": "/solutions"
+      }
+    }
+  ],
+  "partners": [
+    {
+      "name": "Microsoft",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+      "url": "https://www.microsoft.com"
+    },
+    {
+      "name": "Google Cloud",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg",
+      "url": "https://cloud.google.com"
+    },
+    {
+      "name": "Amazon Web Services",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg",
+      "url": "https://aws.amazon.com"
+    },
+    {
+      "name": "IBM",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
+      "url": "https://www.ibm.com"
+    },
+    {
+      "name": "Cisco",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/6/64/Cisco_logo.svg",
+      "url": "https://www.cisco.com"
+    },
+    {
+      "name": "Oracle",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg",
+      "url": "https://www.oracle.com"
+    },
+    {
+      "name": "VMware",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Vmware.svg",
+      "url": "https://www.vmware.com"
+    },
+    {
+      "name": "Dell Technologies",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/4/48/Dell_Logo.svg",
+      "url": "https://www.dell.com"
+    }
+  ],
+  "blogPosts": [
+    {
+      "title": "Les tendances de la cybersécurité en 2025",
+      "excerpt": "Découvrez les principales menaces et les solutions pour protéger votre entreprise",
+      "image": {
+        "imageUrl": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80",
+        "imageAlt": "Cybersecurity trends"
+      },
+      "category": "Cybersécurité",
+      "date": "2025-01-15",
+      "author": "Équipe MatrixConnect",
+      "slug": "tendances-cybersecurite-2025"
+    },
+    {
+      "title": "SD-WAN : Révolutionner la connectivité d'entreprise",
+      "excerpt": "Comment le SD-WAN transforme la gestion des réseaux d'entreprise modernes",
+      "image": {
+        "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80",
+        "imageAlt": "SD-WAN Technology"
+      },
+      "category": "Réseaux",
+      "date": "2025-01-10",
+      "author": "Équipe MatrixConnect",
+      "slug": "sdwan-connectivite-entreprise"
+    },
+    {
+      "title": "Migration vers le Cloud : Guide complet",
+      "excerpt": "Les étapes clés pour réussir votre migration vers une infrastructure cloud hybride",
+      "image": {
+        "imageUrl": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+        "imageAlt": "Cloud Migration"
+      },
+      "category": "Cloud",
+      "date": "2025-01-05",
+      "author": "Équipe MatrixConnect",
+      "slug": "migration-cloud-guide-complet"
+    }
+  ]
+}
