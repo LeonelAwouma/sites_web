@@ -17,7 +17,7 @@ export default function ConnectivitePage() {
       <PageHero
         title="Connectivité"
         subtitle="Le socle de votre performance numérique."
-        image={findImage('solutions-hero')}
+        image={findImage('hero-1')}
       />
       <section className="py-16 sm:py-24">
         <div className="container mx-auto px-4">

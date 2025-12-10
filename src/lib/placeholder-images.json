@@ -1,148 +1,190 @@
 {
-  "heroSlides": [
+  "placeholderImages": [
     {
-      "title": "Sécurité Managée MSSP",
-      "description": "Protection complète de votre infrastructure informatique avec notre service de sécurité managée 24/7",
-      "image": {
-        "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1920&q=80",
-        "imageAlt": "Sécurité Managée MSSP"
-      },
-      "ctaPrimary": {
-        "text": "Obtenir un Devis",
-        "url": "/contact"
-      },
-      "ctaSecondary": {
-        "text": "Nos Solutions",
-        "url": "/solutions"
-      }
+      "id": "hero-1",
+      "description": "Abstract network visualization",
+      "imageUrl": "https://images.unsplash.com/photo-1644088379091-d574269d422f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxuZXR3b3JrJTIwYWJzdHJhY3R8ZW58MHx8fHwxNzY1Mjc5OTAzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "network abstract"
     },
     {
-      "title": "La puissance du SD-WAN",
-      "description": "Optimisez votre réseau avec notre solution SD-WAN de nouvelle génération",
-      "image": {
-        "imageUrl": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80",
-        "imageAlt": "SD-WAN Technology"
-      },
-      "ctaPrimary": {
-        "text": "Obtenir un Devis",
-        "url": "/contact"
-      },
-      "ctaSecondary": {
-        "text": "Nos Solutions",
-        "url": "/solutions"
-      }
+      "id": "hero-2",
+      "description": "Business team collaborating in a modern office",
+      "imageUrl": "https://images.unsplash.com/photo-1568992687947-868a62a9f521?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxidXNpbmVzcyUyMHRlYW18ZW58MHx8fHwxNzY1MzU3NDIyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "business team"
     },
     {
-      "title": "Infrastructure Cloud Hybride",
-      "description": "Déployez et gérez vos applications avec flexibilité grâce à notre expertise cloud",
-      "image": {
-        "imageUrl": "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1920&q=80",
-        "imageAlt": "Cloud Infrastructure"
-      },
-      "ctaPrimary": {
-        "text": "Obtenir un Devis",
-        "url": "/contact"
-      },
-      "ctaSecondary": {
-        "text": "Nos Solutions",
-        "url": "/solutions"
-      }
+      "id": "hero-3",
+      "description": "Secure data center server racks",
+      "imageUrl": "https://images.unsplash.com/photo-1506399558188-acca6f8cbf41?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxkYXRhJTIwY2VudGVyfGVufDB8fHx8MTc2NTM2MzQ1OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "data center"
     },
     {
-      "title": "Support & Maintenance IT",
-      "description": "Bénéficiez d'un support technique expert disponible 24/7 pour votre entreprise",
-      "image": {
-        "imageUrl": "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=1920&q=80",
-        "imageAlt": "IT Support"
-      },
-      "ctaPrimary": {
-        "text": "Obtenir un Devis",
-        "url": "/contact"
-      },
-      "ctaSecondary": {
-        "text": "Nos Solutions",
-        "url": "/solutions"
-      }
-    }
-  ],
-  "partners": [
-    {
-      "name": "Microsoft",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
-      "url": "https://www.microsoft.com"
+      "id": "hero-4",
+      "description": "Global connectivity map",
+      "imageUrl": "https://images.unsplash.com/photo-1566935843973-aed0ddcb0ecc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxnbG9iYWwlMjBtYXB8ZW58MHx8fHwxNzY1MjgzOTc5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "global map"
     },
     {
-      "name": "Google Cloud",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg",
-      "url": "https://cloud.google.com"
+      "id": "welcome-image",
+      "description": "Fiber optic cables with glowing ends",
+      "imageUrl": "https://images.unsplash.com/photo-1604869515882-4d10fa4b0492?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxmaWJlciUyMG9wdGljfGVufDB8fHx8MTc2NTM2MzQ1OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "fiber optic"
     },
     {
-      "name": "Amazon Web Services",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg",
-      "url": "https://aws.amazon.com"
+      "id": "sd-wan-feature",
+      "description": "Diagram of a Software-Defined Wide Area Network",
+      "imageUrl": "https://images.unsplash.com/photo-1738082956257-06cde4444b1c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bmV0d29yayUyMGRpYWdyYW18ZW58MHx8fHwxNzY1Mjk5MTYyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "network diagram"
     },
     {
-      "name": "IBM",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
-      "url": "https://www.ibm.com"
+      "id": "interconnexion-feature",
+      "description": "Two hands connecting puzzle pieces",
+      "imageUrl": "https://images.unsplash.com/photo-1756751308829-5adf2ad8c4a3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y29ubmVjdGlvbiUyMHB1enpsZXxlbnwwfHx8fDE3NjUzNjM0NTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "connection puzzle"
     },
     {
-      "name": "Cisco",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/6/64/Cisco_logo.svg",
-      "url": "https://www.cisco.com"
+      "id": "interconnexion-hero",
+      "description": "Interconnexion hero image",
+      "imageUrl": "https://images.unsplash.com/photo-1756751308829-5adf2ad8c4a3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y29ubmVjdGlvbiUyMHB1enpsZXxlbnwwfHx8fDE3NjUzNjM0NTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "connection puzzle"
     },
     {
-      "name": "Oracle",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg",
-      "url": "https://www.oracle.com"
+      "id": "mssp-feature",
+      "description": "A digital shield protecting a network",
+      "imageUrl": "https://images.unsplash.com/photo-1763656443887-cbf8e447de38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8c2VjdXJpdHklMjBzaGllbGR8ZW58MHx8fHwxNzY1MzM2MTc0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "security shield"
     },
     {
-      "name": "VMware",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Vmware.svg",
-      "url": "https://www.vmware.com"
+      "id": "solutions-hero",
+      "description": "Network infrastructure",
+      "imageUrl": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bmV0d29yayUyMGluZnJhc3RydWN0dXJlfGVufDB8fHx8MTc2NTM2MzQ1OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "network infrastructure"
     },
     {
-      "name": "Dell Technologies",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/4/48/Dell_Logo.svg",
-      "url": "https://www.dell.com"
-    }
-  ],
-  "blogPosts": [
-    {
-      "title": "Les tendances de la cybersécurité en 2025",
-      "excerpt": "Découvrez les principales menaces et les solutions pour protéger votre entreprise",
-      "image": {
-        "imageUrl": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80",
-        "imageAlt": "Cybersecurity trends"
-      },
-      "category": "Cybersécurité",
-      "date": "2025-01-15",
-      "author": "Équipe MatrixConnect",
-      "slug": "tendances-cybersecurite-2025"
+      "id": "map",
+      "description": "Global map visualization",
+      "imageUrl": "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxnbG9iYWwlMjBtYXB8ZW58MHx8fHwxNzY1MzYzNDU5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "world map"
     },
     {
-      "title": "SD-WAN : Révolutionner la connectivité d'entreprise",
-      "excerpt": "Comment le SD-WAN transforme la gestion des réseaux d'entreprise modernes",
-      "image": {
-        "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80",
-        "imageAlt": "SD-WAN Technology"
-      },
-      "category": "Réseaux",
-      "date": "2025-01-10",
-      "author": "Équipe MatrixConnect",
-      "slug": "sdwan-connectivite-entreprise"
+      "id": "about-hero",
+      "description": "About company image",
+      "imageUrl": "https://images.unsplash.com/photo-1552664730-d307ca884978?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb21wYW55JTIwdGVhbXxlbnwwfHx8fDE3NjUzNjM0NTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "company team"
     },
     {
-      "title": "Migration vers le Cloud : Guide complet",
-      "excerpt": "Les étapes clés pour réussir votre migration vers une infrastructure cloud hybride",
-      "image": {
-        "imageUrl": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-        "imageAlt": "Cloud Migration"
-      },
-      "category": "Cloud",
-      "date": "2025-01-05",
-      "author": "Équipe MatrixConnect",
-      "slug": "migration-cloud-guide-complet"
+      "id": "why-choose-us-hero",
+      "description": "Why choose us hero image",
+      "imageUrl": "https://images.unsplash.com/photo-1552664730-d307ca884978?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb21wYW55JTIwdGVhbXxlbnwwfHx8fDE3NjUzNjM0NTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "team work"
+    },
+    {
+      "id": "career-hero",
+      "description": "Career opportunities",
+      "imageUrl": "https://images.unsplash.com/photo-1552664730-d307ca884978?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb21wYW55JTIwdGVhbXxlbnwwfHx8fDE3NjUzNjM0NTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "career opportunities"
+    },
+    {
+      "id": "contact-hero",
+      "description": "Contact us",
+      "imageUrl": "https://images.unsplash.com/photo-1552664730-d307ca884978?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb21wYW55JTIwdGVhbXxlbnwwfHx8fDE3NjUzNjM0NTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "contact"
+    },
+    {
+      "id": "client-logo-1",
+      "description": "Generic client logo 1",
+      "imageUrl": "https://images.unsplash.com/photo-1622465911368-72162f8da3e2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3NjUzMjQxNjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "company logo"
+    },
+    {
+      "id": "client-logo-2",
+      "description": "Generic client logo 2",
+      "imageUrl": "https://images.unsplash.com/photo-1549924231-f129b911e442?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3NjUzMjQxNjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "company logo"
+    },
+    {
+      "id": "client-logo-3",
+      "description": "Generic client logo 3",
+      "imageUrl": "https://images.unsplash.com/photo-1619551734325-81aaf323686c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3NjUzMjQxNjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "company logo"
+    },
+    {
+      "id": "client-logo-4",
+      "description": "Generic client logo 4",
+      "imageUrl": "https://images.unsplash.com/photo-1549924231-f129b911e442?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3NjUzMjQxNjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "company logo"
+    },
+    {
+      "id": "client-logo-5",
+      "description": "Generic client logo 5",
+      "imageUrl": "https://images.unsplash.com/photo-1619551734325-81aaf323686c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3NjUzMjQxNjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "company logo"
+    },
+    {
+      "id": "client-logo-6",
+      "description": "Generic client logo 6",
+      "imageUrl": "https://images.unsplash.com/photo-1620288627223-53302f4e8c74?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3NjUzMjQxNjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "company logo"
+    },
+    {
+      "id": "client-logo-7",
+      "description": "Generic client logo 7",
+      "imageUrl": "https://images.unsplash.com/photo-1529612700005-e35377bf1415?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3NjUzMjQxNjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "company logo"
+    },
+    {
+      "id": "client-logo-8",
+      "description": "Generic client logo 8",
+      "imageUrl": "https://images.unsplash.com/photo-1619551734325-81aaf323686c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3NjUzMjQxNjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "company logo"
+    },
+    {
+      "id": "news-1",
+      "description": "Latest news image 1",
+      "imageUrl": "https://images.unsplash.com/photo-1557821552-17105176677c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxuZXdzfGVufDB8fHx8MTc2NTM2MzQ1OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "news"
+    },
+    {
+      "id": "news-2",
+      "description": "Latest news image 2",
+      "imageUrl": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxuZXdzfGVufDB8fHx8MTc2NTM2MzQ1OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "news"
+    },
+    {
+      "id": "news-3",
+      "description": "Latest news image 3",
+      "imageUrl": "data:image/jpeg;base64,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",
+      "imageHint": "news"
+    },
+    {
+      "id": "testimonial-1",
+      "description": "Testimonial avatar",
+      "imageUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwb3J0cmFpdHxlbnwwfHx8fDE3NjUzNjM0NTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "testimonial portrait"
+    },
+    {
+      "id": "team-member-1",
+      "description": "Team member 1",
+      "imageUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwb3J0cmFpdHxlbnwwfHx8fDE3NjUzNjM0NTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "team member portrait"
+    },
+    {
+      "id": "team-member-2",
+      "description": "Team member 2",
+      "imageUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxwb3J0cmFpdHxlbnwwfHx8fDE3NjUzNjM0NTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "team member portrait"
+    },
+    {
+      "id": "team-member-3",
+      "description": "Team member 3",
+      "imageUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxwb3J0cmFpdHxlbnwwfHx8fDE3NjUzNjM0NTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "team member portrait"
+    },
+    {
+      "id": "team-member-4",
+      "description": "Team member 4",
+      "imageUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwb3J0cmFpdHxlbnwwfHx8fDE3NjUzNjM0NTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "team member portrait"
     }
   ]
 }

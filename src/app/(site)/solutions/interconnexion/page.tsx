@@ -25,7 +25,7 @@ export default function InterconnexionPage() {
       <PageHero
         title="Interconnexion"
         subtitle="Unifiez votre réseau d'entreprise, en toute sécurité."
-        image={findImage('hero-4')}
+        image={findImage('interconnexion-hero')}
       />
       <section className="py-16 sm:py-24">
         <div className="container mx-auto px-4">
