@@ -41,7 +41,7 @@ export default function ContactPage() {
                 <MapPin className="h-6 w-6 text-accent mt-1 flex-shrink-0" />
                 <div>
                   <h4 className="font-semibold">Siège Social</h4>
-                  <p className="text-muted-foreground">123, Avenue de la République, Dakar, Sénégal</p>
+                  <p className="text-muted-foreground">123, Avenue de la République, Yaoundé, Cameroun</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">

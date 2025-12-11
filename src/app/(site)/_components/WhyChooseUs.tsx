@@ -12,7 +12,7 @@ export function WhyChooseUs() {
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-3xl font-bold tracking-tight text-primary sm:text-4xl">
-            Pourquoi choisir Matrix Télécoms ?
+            Pourquoi choisir Matrix Connect ?
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Nous ne sommes pas seulement un fournisseur, nous sommes votre

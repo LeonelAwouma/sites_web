@@ -18,9 +18,8 @@ interface SiteContent {
   lastIndexed: Date;
 }
 
-// Configuration Groq
-const GROQ_API_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
-const GROQ_MODEL = 'llama-3.3-70b-versatile'; // Modèle recommandé pour le français
+// Configuration
+const GEMINI_API_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent';
 
 const AIAssistant: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,7 +50,7 @@ const AIAssistant: React.FC = () => {
     }
   }, [isOpen]);
 
-  // Indexation automatique au chargement
+  // Indexation automatique au chargement (avec état React au lieu de localStorage)
   useEffect(() => {
     const initializeContent = async () => {
       const cachedData = sessionStorage.getItem('matrixconnect_cache');
@@ -70,7 +69,7 @@ const AIAssistant: React.FC = () => {
     initializeContent();
   }, []);
 
-  // Fonction pour extraire le contenu avec capture des listes
+  // Fonction pour extraire le contenu avec meilleure structure
   const extractPageContent = async (url: string): Promise<SiteContent | null> => {
     try {
       const response = await fetch(url, {
@@ -95,38 +94,23 @@ const AIAssistant: React.FC = () => {
       
       const textNodes: string[] = [];
       
-      // Extraire les éléments avec leur contexte
-      mainContent?.querySelectorAll('h1, h2, h3, h4, p, ul, ol, li, td, th, div').forEach(el => {
+      // Prioriser les éléments structurés
+      mainContent?.querySelectorAll('h1, h2, h3, h4, p, li, td, th').forEach(el => {
         const text = el.textContent?.trim();
-        
-        // Ignorer les éléments trop courts ou non pertinents
-        if (!text || text.length < 20 || text.match(/(Obtenir un Devis|En savoir plus|Cliquez ici|Cookie)/i)) {
-          return;
-        }
-        
-        // Traiter les titres
-        if (el.tagName.match(/H[1-4]/)) {
-          textNodes.push(`\n### ${text}\n`);
-        }
-        // Traiter les listes (ul/ol)
-        else if (el.tagName === 'UL' || el.tagName === 'OL') {
-          const listItems = Array.from(el.querySelectorAll('li'))
-            .map(li => `• ${li.textContent?.trim()}`)
-            .filter(item => item.length > 5)
-            .join('\n');
-          if (listItems) {
-            textNodes.push(listItems);
+        if (text && text.length > 30 && !text.match(/(Obtenir un Devis|En savoir plus|Cliquez ici)/i)) {
+          // Ajouter contexte pour les titres
+          if (el.tagName.match(/H[1-4]/)) {
+            textNodes.push(`\n### ${text}\n`);
+          } else {
+            textNodes.push(text);
           }
-        }
-        // Traiter les paragraphes et autres éléments
-        else if (!el.closest('ul, ol') && text.length > 30) {
-          textNodes.push(text);
         }
       });
       
       const cleanContent = textNodes
         .join('\n')
-        .replace(/\n{3,}/g, '\n\n')
+        .replace(/\s+/g, ' ')
+        .replace(/\n\s+/g, '\n')
         .trim();
       
       if (cleanContent.length < 100) return null;
@@ -134,7 +118,7 @@ const AIAssistant: React.FC = () => {
       return {
         url,
         title: title.trim(),
-        content: cleanContent.substring(0, 6000),
+        content: cleanContent.substring(0, 5000), // Augmenté pour plus de contexte
         lastIndexed: new Date()
       };
     } catch (error) {
@@ -143,7 +127,7 @@ const AIAssistant: React.FC = () => {
     }
   };
 
-  // Indexation du site
+  // Indexation du site (pages étendues)
   const indexSite = async () => {
     setIsIndexing(true);
     const indexed: SiteContent[] = [];
@@ -189,48 +173,22 @@ const AIAssistant: React.FC = () => {
     console.log(`✅ ${indexed.length} pages indexées avec succès`);
   };
 
-  // Recherche de similarité améliorée
+  // Recherche de similarité simple (simulation RAG côté client)
   const findRelevantContent = (query: string, topK: number = 3): string => {
     const queryLower = query.toLowerCase();
-    
-    // Extraire les mots-clés significatifs
-    const stopWords = ['quels', 'sont', 'les', 'des', 'une', 'pour', 'avec', 'dans', 'sur', 'est', 'que', 'qui', 'comment', 'pourquoi'];
-    const keywords = queryLower
-      .split(/\s+/)
-      .filter(w => w.length > 3 && !stopWords.includes(w));
+    const keywords = queryLower.split(/\s+/).filter(w => w.length > 3);
     
     const scored = siteContent.map(page => {
       let score = 0;
       const contentLower = page.content.toLowerCase();
-      const titleLower = page.title.toLowerCase();
       
-      // Bonus si le titre contient le mot-clé
-      keywords.forEach(keyword => {
-        if (titleLower.includes(keyword)) {
-          score += 20;
-        }
-      });
-      
-      // Compter les occurrences de chaque mot-clé
       keywords.forEach(keyword => {
         const matches = (contentLower.match(new RegExp(keyword, 'g')) || []).length;
-        score += matches * 3;
+        score += matches * 2;
       });
       
-      // Bonus si la requête complète est trouvée
       if (contentLower.includes(queryLower)) {
-        score += 15;
-      }
-      
-      // Bonus pour la proximité entre mots-clés
-      if (keywords.length > 1) {
-        keywords.forEach((kw1, i) => {
-          keywords.slice(i + 1).forEach(kw2 => {
-            const regex = new RegExp(`${kw1}.{0,50}${kw2}|${kw2}.{0,50}${kw1}`, 'g');
-            const proximityMatches = (contentLower.match(regex) || []).length;
-            score += proximityMatches * 5;
-          });
-        });
+        score += 10;
       }
       
       return { page, score };
@@ -250,16 +208,19 @@ const AIAssistant: React.FC = () => {
     ).join('\n\n---\n\n');
   };
 
-  // Prompt système pour Groq (style Flask)
-  const getSystemPrompt = (): string => {
-    return `Tu es un assistant virtuel pour MatrixConnect, une entreprise de télécommunications privé au Cameroun. Ton rôle est d'aider les visiteurs à découvrir nos services et répondre à leurs questions.Fournis des réponses précises basées sur les informations du site www.matrixtelecoms.com.
+  // Prompt optimisé inspiré du backend Flask
+  const getEnrichedPrompt = (userMessage: string): string => {
+    const relevantContext = findRelevantContent(userMessage);
+
+    return `Tu es un assistant virtuel pour MatrixConnect, une entreprise de télécommunications B2B au Cameroun. Ton rôle est d'aider les visiteurs à découvrir nos services et répondre à leurs questions.
+
 **RÈGLES DE RÉPONSE :**
 1. Utilise un ton professionnel et direct
 2. Évite les formules de politesse excessives ("Bonjour", "Merci", "N'hésitez pas")
-3. Fournis des réponses précises basées sur le contexte du site fourni
+3. Fournis des réponses précises basées sur le contexte du site
 4. Pour les détails techniques complexes, redirige vers : +237 242 13 95 45 ou info@matrixconnect.cm
 5. Réponds en français, de manière claire et concise (3-5 phrases maximum)
-6. Termine par un appel à l'action pertinent (contact, devis, démo)
+6. Termine par un appel à l'action pertinent
 
 **INFORMATIONS CLÉS MATRIXCONNECT :**
 - Fondation : 1997, filiale du Groupe ICCNET (créé en 1995)
@@ -273,75 +234,62 @@ const AIAssistant: React.FC = () => {
 📍 Douala : 24122 Douala | ☎️ +237 233 43 88 18
 📧 info@matrixconnect.cm
 
-Réponds de manière naturelle, professionnelle et orientée action.`;
+**CONTEXTE EXTRAIT DU SITE :**
+${relevantContext}
+
+**QUESTION DU VISITEUR :**
+${userMessage}
+
+Réponds maintenant de manière naturelle, professionnelle et orientée action.`;
   };
 
-  // Appel à l'API Groq
-  const sendToGroq = async (userMessage: string): Promise<string> => {
+  // Appel à l'API Gemini
+  const sendToGemini = async (userMessage: string): Promise<string> => {
     try {
-      const apiKey = process.env.NEXT_PUBLIC_GROQ_API_KEY;
+      const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
       
       if (!apiKey || apiKey === 'DEMO_KEY') {
-        console.warn('⚠️ Mode démo - Configurez NEXT_PUBLIC_GROQ_API_KEY');
+        console.warn('⚠️ Mode démo - Configurez NEXT_PUBLIC_GEMINI_API_KEY');
         return getFallbackResponse(userMessage);
       }
 
-      const relevantContext = findRelevantContent(userMessage);
-
-      const response = await fetch(GROQ_API_ENDPOINT, {
+      const response = await fetch(`${GEMINI_API_ENDPOINT}?key=${apiKey}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
         },
         body: JSON.stringify({
-          model: GROQ_MODEL,
-          messages: [
-            {
-              role: 'system',
-              content: getSystemPrompt()
-            },
-            {
-              role: 'user',
-              content: `CONTEXTE EXTRAIT DU SITE :\n${relevantContext}\n\nQUESTION DU VISITEUR :\n${userMessage}`
-            }
-          ],
-          temperature: 0.7,
-          max_tokens: 800,
-          top_p: 0.9
+          contents: [{
+            parts: [{
+              text: getEnrichedPrompt(userMessage)
+            }]
+          }],
+          generationConfig: {
+            temperature: 0.7,
+            topP: 0.9,
+            topK: 40,
+            maxOutputTokens: 800,
+          }
         })
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        
         if (response.status === 429) {
-          console.warn('⚠️ Quota Groq dépassé');
+          console.warn('⚠️ Quota Gemini dépassé');
           return getFallbackResponse(userMessage);
         }
-        
-        if (response.status === 401) {
-          console.error('❌ Clé API Groq invalide');
-          return getFallbackResponse(userMessage);
-        }
-        
-        throw new Error(`Erreur API Groq: ${response.status} - ${JSON.stringify(errorData)}`);
+        throw new Error(`Erreur API: ${response.status}`);
       }
 
       const data = await response.json();
-      
-      if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-        throw new Error('Réponse API Groq invalide');
-      }
-      
-      return data.choices[0].message.content;
+      return data.candidates[0].content.parts[0].text;
     } catch (error) {
-      console.error('Erreur Groq:', error);
+      console.error('Erreur Gemini:', error);
       return getFallbackResponse(userMessage);
     }
   };
 
-  // Réponses de secours détaillées
+  // Réponses de secours améliorées (style direct, sans formules)
   const getFallbackResponse = (userMessage: string): string => {
     const msg = userMessage.toLowerCase();
     
@@ -353,12 +301,8 @@ Réponds de manière naturelle, professionnelle et orientée action.`;
       return 'Le SD-WAN centralise et optimise vos liaisons WAN (Fibre, 4G, MPLS). Vous gagnez jusqu\'à 40% sur les coûts, améliorez les performances et sécurisez le trafic. Idéal pour interconnecter plusieurs sites avec une gestion cloud centralisée. Demandez une démonstration : info@matrixconnect.cm.';
     }
 
-    if (msg.match(/mpls|interconnexion|multi-sites/)) {
-      return 'Le MPLS interconnecte l\'ensemble de vos sites (siège, agences, data centers) au sein d\'un réseau privé, étanche à Internet. Avantages clés :\n\n• Sécurité et confidentialité des données\n• Qualité de Service (QoS) pour applications critiques\n• Gestion centralisée et simplifiée du réseau\n• Haute disponibilité et redondance\n• Performances garanties (SLA)\n• Évolutivité pour accompagner votre croissance\n\nC\'est la colonne vertébrale de votre système d\'information. Infrastructure 80 Gbps disponible. Combien de sites souhaitez-vous connecter ? Appelez +237 242 13 95 45.';
-    }
-    
-    if (msg.match(/vpn/)) {
-      return 'Nos solutions VPN sécurisent vos connexions distantes et interconnectent vos sites via Internet. Chiffrement robuste, accès nomade pour vos collaborateurs, et intégration avec votre infrastructure existante. Alternative économique au MPLS pour certains cas d\'usage. Besoin d\'une analyse de vos besoins ? Contact : +237 233 43 88 18.';
+    if (msg.match(/mpls|interconnexion|multi-sites|vpn/)) {
+      return 'Notre réseau MPLS IP/VPN interconnecte vos sites sur un réseau privé sécurisé avec QoS garantie. Infrastructure 80 Gbps pour des performances optimales, au Cameroun et à l\'international. Combien de sites connecter ? Appelez +237 242 13 95 45.';
     }
     
     if (msg.match(/fibre|connectivité|internet|connexion|bande passante/)) {
@@ -375,10 +319,6 @@ Réponds de manière naturelle, professionnelle et orientée action.`;
 
     if (msg.match(/téléphonie|voip|ip|communication|pbx/)) {
       return 'Solutions de téléphonie IP complètes : IPBX virtuels ou physiques, numéros SDA, appels illimités intra-réseau, mobilité totale. Réduisez vos coûts de communication jusqu\'à 60%. Demandez une démo : +237 242 13 95 45.';
-    }
-    
-    if (msg.match(/vidéo|visio|conférence|réunion/)) {
-      return 'Solutions de vidéoconférence professionnelles : qualité HD, partage d\'écran, enregistrement des sessions. Intégration avec vos outils existants et infrastructure optimisée pour la collaboration à distance. Contact : info@matrixconnect.cm.';
     }
 
     return 'MatrixConnect, leader télécom B2B au Cameroun depuis 1997. Infrastructure 80 Gbps pour : Connectivité très haut débit, SD-WAN intelligent, Sécurité MSSP 24/7, Interconnexion multi-sites. Filiale du Groupe ICCNET. Comment puis-je vous aider concrètement ? 📞 +237 242 13 95 45';
@@ -400,7 +340,7 @@ Réponds de manière naturelle, professionnelle et orientée action.`;
     setIsLoading(true);
 
     try {
-      const response = await sendToGroq(userMessage.content);
+      const response = await sendToGemini(userMessage.content);
       
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -459,7 +399,7 @@ Réponds de manière naturelle, professionnelle et orientée action.`;
               <div>
                 <h3 className="font-semibold">Assistant MatrixConnect</h3>
                 <p className="text-xs text-green-100">
-                  {isIndexing ? 'Indexation...' : siteContent.length > 0 ? `${siteContent.length} pages • Groq AI` : 'En ligne'}
+                  {isIndexing ? 'Indexation...' : siteContent.length > 0 ? `${siteContent.length} pages • RAG actif` : 'En ligne'}
                 </p>
               </div>
             </div>
@@ -551,7 +491,7 @@ Réponds de manière naturelle, professionnelle et orientée action.`;
               </button>
             </div>
             <p className="text-xs text-gray-400 mt-2 text-center">
-              Propulsé par Groq AI (Llama 3.3 70B) • MatrixConnect © 2025
+              Propulsé par Gemini AI + RAG • MatrixConnect © 2025
             </p>
           </div>
         </div>
