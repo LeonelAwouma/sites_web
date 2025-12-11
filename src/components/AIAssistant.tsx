@@ -20,7 +20,7 @@ const AIAssistant: React.FC = () => {
     {
       id: '1',
       role: 'assistant',
-      content: 'Bonjour ! Je suis l\'assistant virtuel de MatrixConnect. Comment puis-je vous aider aujourd\'hui ? Je peux répondre à vos questions sur nos solutions de connectivité, SD-WAN, cybersécurité et bien plus encore.',
+      content: 'Bonjour ! Je suis l\'assistant virtuel de MatrixConnect, leader camerounais des télécommunications depuis 1997. Avec 28 ans d\'expertise et une infrastructure jusqu\'à 80 Gbps, comment puis-je vous accompagner ? (Connectivité, SD-WAN, Sécurité MSSP, Interconnexion...)',
       timestamp: new Date()
     }
   ]);
@@ -43,28 +43,90 @@ const AIAssistant: React.FC = () => {
 
   // Contexte enrichi de MatrixConnect
   const getEnrichedPrompt = (userMessage: string): string => {
-    const context = `Tu es l'assistant virtuel de MatrixConnect, une entreprise camerounaise spécialisée dans les solutions télécoms et IT. 
+    const context = `Tu es l'assistant virtuel de MatrixConnect, leader camerounais des télécommunications et services IP depuis 1997.
 
-Informations sur MatrixConnect :
-- Solutions de Connectivité : Fibre dédiée, Faisceau Hertzien, VSAT, Backup 4G/5G
-- Solutions d'Interconnexion : MPLS IP/VPN, VPLS (LAN to LAN), Internet VPN (Site to Site)
-- Solutions de Sécurité : MSSP 24/7, SOC, Firewall managé, DDoS protection
-- Solutions SD-WAN : Optimisation WAN, Gestion centralisée, Sécurité intégrée
-- Console Connect : Plateforme cloud pour connectivité multi-cloud
-- Localisation : Cameroun (Douala, Yaoundé)
-- Expertise : Plus de 10 ans d'expérience
-- Clients : Entreprises, PME, grandes organisations
+INFORMATIONS ENTREPRISE :
+- Fondation : 1997, filiale du Groupe ICCNET (créé en 1995 sous le nom International Computer Center - ICC)
+- Expérience : 28 ans d'expertise (2025)
+- Mission : "Connecting People. Inspiring Solutions"
+- Positionnement : Hub majeur pour entreprises, organisations publiques/privées, acteurs internationaux au Cameroun
+- Capital social : 80 millions FCFA
+- Infrastructure : Vitesses jusqu'à 80 Gbps, haute disponibilité
+- Focus : Solutions B2B (Business to Business)
 
-Ton rôle :
-- Répondre de manière professionnelle et concise
-- Orienter les clients vers les bonnes solutions
+COORDONNÉES OFFICIELLES :
+📍 Siège Yaoundé : 4124 Yaoundé, Cameroun
+   ☎️ +237 242 13 95 45 / +237 222 21 26 11 / +237 242 23 22 01
+📍 Succursale Douala : 24122 Douala, Cameroun
+   ☎️ +237 222 21 26 11 / +237 233 43 88 18
+📧 Email : info@matrixconnect.cm
+
+SOLUTIONS TÉLÉCOMS COMPLÈTES :
+1. 🌐 Connectivité Haut Débit :
+   - Fibre dédiée symétrique (jusqu'à 80 Gbps)
+   - Faisceau Hertzien
+   - VSAT (zones isolées)
+   - Backup 4G/5G (continuité de service)
+
+2. 🔗 Interconnexion Multi-Sites :
+   - MPLS IP/VPN (QoS garantie)
+   - VPLS (LAN to LAN)
+   - Internet VPN (Site to Site)
+   - Réseaux privés sécurisés
+
+3. 🛡️ Sécurité Managée (MSSP) :
+   - SOC 24/7 (Security Operations Center)
+   - Firewall managé nouvelle génération
+   - Détection et prévention d'intrusions
+   - Protection DDoS
+   - Audits de sécurité
+
+4. 🚀 SD-WAN (Software-Defined WAN) :
+   - Optimisation multi-liens WAN
+   - Gestion centralisée cloud
+   - Réduction des coûts opérationnels
+   - Sécurité intégrée
+   - Performances optimisées
+
+5. ☁️ Console Connect :
+   - Plateforme cloud connectivité
+   - Accès multi-cloud (AWS, Azure, Google Cloud)
+   - Gestion self-service
+   - Interconnexion datacenter
+
+EXPERTISE ET CONTRIBUTION :
+- Participation à l'essor des TIC au Cameroun
+- Projets d'infrastructure nationale
+- Formation de talents locaux
+- Plus de 28 ans de contribution au développement technologique du pays
+
+CLIENTS CIBLES :
+- Grandes entreprises multinationales
+- PME en croissance
+- Organisations publiques et gouvernementales
+- Institutions financières (banques, assurances)
+- Opérateurs télécoms
+- Datacenters et cloud providers
+
+VALEURS FONDAMENTALES :
+✅ Excellence et innovation
+✅ Formation talents locaux
+✅ Relation client proactive
+✅ Services fiables et sécurisés
+✅ Accompagnement personnalisé
+
+TON RÔLE EN TANT QU'ASSISTANT :
+- Répondre professionnellement avec expertise technique
+- Mettre en avant les 28 ans d'expérience et infrastructure 80 Gbps
+- Orienter vers les bonnes solutions selon les besoins
 - Expliquer les technologies de manière accessible
-- Encourager les visiteurs à contacter l'équipe commerciale
-- Parler en français avec un ton amical mais professionnel
+- Encourager le contact direct (téléphone/email) pour devis personnalisés
+- Valoriser la mission "Connecting People. Inspiring Solutions"
+- Parler français avec un ton amical mais expert
 
 Question du client : ${userMessage}
 
-Réponds de manière claire et utile, en limitant ta réponse à 3-4 phrases maximum.`;
+Réponds de manière claire, précise et professionnelle en 3-4 phrases maximum. Valorise l'expertise MatrixConnect et guide vers l'action (contact, devis, démo).`;
 
     return context;
   };
@@ -72,12 +134,9 @@ Réponds de manière claire et utile, en limitant ta réponse à 3-4 phrases max
   // Appel à l'API Gemini
   const sendToGemini = async (userMessage: string): Promise<string> => {
     try {
-      // Note: En production, l'API key doit être dans .env côté serveur
-      // Pour cette démo, nous simulons l'appel
       const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || 'DEMO_KEY';
       
       if (apiKey === 'DEMO_KEY') {
-        // Mode démo sans vraie API
         return getDemoResponse(userMessage);
       }
 
@@ -100,58 +159,92 @@ Réponds de manière claire et utile, en limitant ta réponse à 3-4 phrases max
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        
-        // Si quota dépassé, bascule automatiquement en mode démo
         if (response.status === 429) {
           console.warn('⚠️ Quota Gemini dépassé, utilisation du mode démo');
           return getDemoResponse(userMessage);
         }
-        
-        console.warn('Erreur API Gemini - Status:', response.status);
-        console.warn('Détails:', errorData);
         throw new Error(`Erreur API Gemini: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('Réponse Gemini:', data);
       return data.candidates[0].content.parts[0].text;
     } catch (error) {
-      console.error('Erreur complète Gemini:', error);
-      // En cas d'erreur, utilise le mode démo comme fallback
+      console.error('Erreur Gemini:', error);
       return getDemoResponse(userMessage);
     }
   };
 
-  // Réponses de démo intelligentes
+  // Réponses de démo intelligentes enrichies
   const getDemoResponse = (userMessage: string): string => {
     const msg = userMessage.toLowerCase();
     
-    if (msg.includes('prix') || msg.includes('tarif') || msg.includes('coût')) {
-      return 'Nos tarifs sont personnalisés selon vos besoins spécifiques. Je vous invite à contacter notre équipe commerciale qui établira un devis adapté à votre infrastructure et vos objectifs. Souhaitez-vous que je vous mette en relation ?';
+    // Prix et tarifs
+    if (msg.includes('prix') || msg.includes('tarif') || msg.includes('coût') || msg.includes('budget')) {
+      return 'Nos tarifs sont personnalisés selon votre infrastructure. Avec 28 ans d\'expérience, nous établissons des devis adaptés à vos besoins. Contactez-nous au +237 242 13 95 45 (Yaoundé) ou +237 233 43 88 18 (Douala) pour un audit gratuit et un devis sur mesure.';
     }
     
-    if (msg.includes('fibre') || msg.includes('connectivité') || msg.includes('internet')) {
-      return 'Nous proposons plusieurs solutions de connectivité : Fibre dédiée symétrique, Faisceau Hertzien, VSAT pour les zones isolées, et Backup 4G/5G pour garantir votre continuité. Quelle est votre problématique principale ?';
+    // Connectivité et fibre
+    if (msg.includes('fibre') || msg.includes('connectivité') || msg.includes('internet') || msg.includes('bande passante')) {
+      return 'MatrixConnect propose des connexions jusqu\'à 80 Gbps avec haute disponibilité : Fibre dédiée symétrique, Faisceau Hertzien, VSAT pour zones isolées, Backup 4G/5G. Leader depuis 1997, nous garantissons la continuité de service. Quelle est votre problématique principale ?';
     }
     
-    if (msg.includes('sd-wan') || msg.includes('sdwan')) {
-      return 'Notre solution SD-WAN optimise votre réseau WAN en combinant plusieurs liens (Fibre, 4G, MPLS) avec une gestion centralisée. Vous bénéficiez de meilleures performances, réduction des coûts et sécurité renforcée. Voulez-vous en savoir plus ?';
+    // SD-WAN
+    if (msg.includes('sd-wan') || msg.includes('sdwan') || msg.includes('wan')) {
+      return 'Notre SD-WAN optimise vos liens WAN (Fibre, 4G, MPLS) avec gestion centralisée cloud. Réduction des coûts jusqu\'à 40%, meilleures performances et sécurité renforcée. Filiale du Groupe ICCNET, 28 ans d\'expertise. Souhaitez-vous une démonstration ?';
     }
     
-    if (msg.includes('sécurité') || msg.includes('mssp') || msg.includes('cyberattaque')) {
-      return 'Notre service MSSP (Managed Security Service Provider) assure une protection 24/7 avec SOC, firewall managé, détection d\'intrusions et protection DDoS. Votre sécurité est notre priorité. Puis-je vous orienter vers un expert ?';
+    // Sécurité et MSSP
+    if (msg.includes('sécurité') || msg.includes('mssp') || msg.includes('cyberattaque') || msg.includes('firewall') || msg.includes('soc')) {
+      return 'Notre MSSP assure une protection 24/7 : SOC dédié, Firewall nouvelle génération, détection d\'intrusions, protection DDoS avancée. MatrixConnect, expert sécurité depuis 1997 au Cameroun. Contactez info@matrixconnect.cm pour un audit de sécurité gratuit.';
     }
     
-    if (msg.includes('contact') || msg.includes('rendez-vous') || msg.includes('commercial')) {
-      return 'Parfait ! Vous pouvez nous contacter au +237 XXX XXX XXX ou par email à contact@matrixconnect.cm. Notre équipe vous rappellera sous 24h pour discuter de vos besoins. Préférez-vous un contact téléphonique ou email ?';
+    // Contact et commercial
+    if (msg.includes('contact') || msg.includes('rendez-vous') || msg.includes('commercial') || msg.includes('devis')) {
+      return '📞 Yaoundé : +237 242 13 95 45 | Douala : +237 233 43 88 18 | 📧 info@matrixconnect.cm. Notre équipe commerciale vous rappelle sous 24h. Filiale du Groupe ICCNET, 28 ans d\'expertise et infrastructure 80 Gbps à votre service. Préférez-vous un rendez-vous téléphonique ou en agence ?';
     }
     
-    if (msg.includes('mpls') || msg.includes('vpn') || msg.includes('interconnexion')) {
-      return 'Nos solutions d\'interconnexion (MPLS IP/VPN, VPLS LAN to LAN) permettent de relier vos sites de manière sécurisée avec QoS garantie. Idéal pour les multi-sites. Combien de sites souhaitez-vous interconnecter ?';
+    // MPLS, VPN, Interconnexion
+    if (msg.includes('mpls') || msg.includes('vpn') || msg.includes('interconnexion') || msg.includes('multi-sites')) {
+      return 'Nos solutions d\'interconnexion (MPLS IP/VPN, VPLS LAN to LAN) relient vos sites de manière sécurisée avec QoS garantie. Infrastructure 80 Gbps, depuis 1997. Idéal pour entreprises multi-sites. Combien de sites souhaitez-vous interconnecter ?';
+    }
+
+    // Histoire et présentation
+    if (msg.includes('histoire') || msg.includes('entreprise') || msg.includes('qui êtes') || msg.includes('présentation') || msg.includes('iccnet')) {
+      return 'MatrixConnect, fondée en 1997, filiale du Groupe ICCNET (créé en 1995 sous le nom ICC). 28 ans d\'expertise, leader télécoms B2B au Cameroun. Infrastructure 80 Gbps. Mission : "Connecting People. Inspiring Solutions". Capital 80 millions FCFA. Hub majeur pour entreprises et organisations publiques.';
+    }
+
+    // Localisation
+    if (msg.includes('yaoundé') || msg.includes('douala') || msg.includes('localisation') || msg.includes('adresse') || msg.includes('où')) {
+      return '📍 Siège Yaoundé (4124) : +237 242 13 95 45 | Succursale Douala (24122) : +237 233 43 88 18. Nous couvrons tout le Cameroun avec des solutions adaptées aux entreprises, organisations publiques et acteurs internationaux. Quelle ville vous intéresse ?';
+    }
+
+    // Console Connect et Cloud
+    if (msg.includes('console connect') || msg.includes('cloud') || msg.includes('aws') || msg.includes('azure') || msg.includes('multi-cloud')) {
+      return 'Console Connect est notre plateforme cloud pour connectivité multi-cloud (AWS, Azure, Google Cloud). Gestion self-service, interconnexion datacenter, accès instantané. Infrastructure 80 Gbps. Souhaitez-vous une démonstration de la plateforme ?';
+    }
+
+    // Support et assistance
+    if (msg.includes('support') || msg.includes('assistance') || msg.includes('help') || msg.includes('problème') || msg.includes('panne')) {
+      return 'Notre support technique 24/7 est disponible : +237 242 23 22 01 (Yaoundé) ou info@matrixconnect.cm. Avec 28 ans d\'expérience, nous garantissons une haute disponibilité et intervention rapide. Quel est le problème rencontré ?';
+    }
+
+    // Clients et références
+    if (msg.includes('client') || msg.includes('référence') || msg.includes('partenaire') || msg.includes('qui utilise')) {
+      return 'MatrixConnect accompagne des grandes entreprises multinationales, PME, organisations publiques, institutions financières et opérateurs télécoms au Cameroun. 28 ans d\'expertise, infrastructure 80 Gbps. Souhaitez-vous des cas d\'usage spécifiques à votre secteur ?';
+    }
+
+    // VSAT et zones isolées
+    if (msg.includes('vsat') || msg.includes('satellite') || msg.includes('zone isolée') || msg.includes('rural')) {
+      return 'Notre solution VSAT permet la connectivité haut débit dans les zones isolées non couvertes par la fibre. Idéal pour sites miniers, bases pétrolières, zones rurales. Depuis 1997, expert connectivité au Cameroun. Quelle est votre localisation ?';
+    }
+
+    // Backup et continuité
+    if (msg.includes('backup') || msg.includes('4g') || msg.includes('5g') || msg.includes('continuité') || msg.includes('redondance')) {
+      return 'Nos solutions Backup 4G/5G garantissent la continuité de service en cas de panne fibre. Basculement automatique, infrastructure redondante. 28 ans d\'expertise, disponibilité maximale. Souhaitez-vous un devis pour une solution de secours ?';
     }
     
-    return 'Je suis là pour vous aider ! MatrixConnect propose des solutions complètes : Connectivité (Fibre, VSAT), SD-WAN, Sécurité managée (MSSP), et Interconnexion de sites. Que puis-je vous expliquer en détail ?';
+    // Réponse par défaut enrichie
+    return 'Bienvenue chez MatrixConnect, leader télécoms depuis 1997 ! 🚀 Infrastructure 80 Gbps, filiale du Groupe ICCNET. Nos solutions : Connectivité haut débit, SD-WAN, Sécurité MSSP 24/7, Interconnexion multi-sites, Console Connect cloud. Comment puis-je vous aider ? 📞 +237 242 13 95 45';
   };
 
   // Envoi du message
@@ -182,6 +275,13 @@ Réponds de manière claire et utile, en limitant ta réponse à 3-4 phrases max
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Erreur:', error);
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: 'Désolé, une erreur est survenue. Veuillez réessayer ou nous contacter au +237 242 13 95 45.',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
     }
@@ -206,10 +306,10 @@ Réponds de manière claire et utile, en limitant ta réponse à 3-4 phrases max
         >
           <MessageCircle className="w-6 h-6" />
           <span className="absolute -top-1 -right-1 bg-green-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
-            1
+            AI
           </span>
           <span className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-green-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-            Besoin d'aide ?
+            Besoin d'aide ? 💬
           </span>
         </button>
       )}
@@ -225,7 +325,7 @@ Réponds de manière claire et utile, en limitant ta réponse à 3-4 phrases max
               </div>
               <div>
                 <h3 className="font-semibold">Assistant MatrixConnect</h3>
-                <p className="text-xs text-green-100">En ligne • Propulsé par Gemini AI</p>
+                <p className="text-xs text-green-100">En ligne • 28 ans d'expertise</p>
               </div>
             </div>
             <button
@@ -238,26 +338,26 @@ Réponds de manière claire et utile, en limitant ta réponse à 3-4 phrases max
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-white">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-green-50/30 to-white">
             {messages.map((message) => (
               <div
                 key={message.id}
                 className={`flex gap-3 ${message.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
               >
                 <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-                  message.role === 'user' ? 'bg-green-600' : 'bg-gray-200'
+                  message.role === 'user' ? 'bg-green-600' : 'bg-gradient-to-br from-green-500 to-green-600'
                 }`}>
                   {message.role === 'user' ? (
                     <User className="w-4 h-4 text-white" />
                   ) : (
-                    <Bot className="w-4 h-4 text-green-700" />
+                    <Bot className="w-4 h-4 text-white" />
                   )}
                 </div>
                 <div
                   className={`max-w-[75%] rounded-2xl p-3 ${
                     message.role === 'user'
                       ? 'bg-green-600 text-white'
-                      : 'bg-green-50 text-gray-800 border border-green-200'
+                      : 'bg-white text-gray-800 border border-green-200 shadow-sm'
                   }`}
                 >
                   <p className="text-sm leading-relaxed whitespace-pre-wrap">
@@ -276,10 +376,10 @@ Réponds de manière claire et utile, en limitant ta réponse à 3-4 phrases max
             ))}
             {isLoading && (
               <div className="flex gap-3">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-                  <Bot className="w-4 h-4 text-green-700" />
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center">
+                  <Bot className="w-4 h-4 text-white" />
                 </div>
-                <div className="bg-green-50 rounded-2xl p-3 border border-green-200">
+                <div className="bg-white rounded-2xl p-3 border border-green-200 shadow-sm">
                   <Loader2 className="w-5 h-5 text-green-600 animate-spin" />
                 </div>
               </div>
@@ -310,7 +410,7 @@ Réponds de manière claire et utile, en limitant ta réponse à 3-4 phrases max
               </button>
             </div>
             <p className="text-xs text-gray-400 mt-2 text-center">
-              Propulsé par Google Gemini AI
+              Propulsé par Google Gemini AI • MatrixConnect © 2025
             </p>
           </div>
         </div>
