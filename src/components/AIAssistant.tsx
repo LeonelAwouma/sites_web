@@ -18,9 +18,9 @@ interface SiteContent {
   lastIndexed: Date;
 }
 
-// Configuration Groq
+// Configuration
 const GROQ_API_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
-const GROQ_MODEL = 'llama-3.3-70b-versatile'; // Modèle recommandé pour le français
+const GROQ_MODEL = 'llama-3.3-70b-versatile';
 
 const AIAssistant: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,19 +39,16 @@ const AIAssistant: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Scroll automatique vers le bas
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Focus sur l'input quand le chat s'ouvre
   useEffect(() => {
     if (isOpen) {
       inputRef.current?.focus();
     }
   }, [isOpen]);
 
-  // Indexation automatique au chargement
   useEffect(() => {
     const initializeContent = async () => {
       const cachedData = sessionStorage.getItem('matrixconnect_cache');
@@ -70,7 +67,6 @@ const AIAssistant: React.FC = () => {
     initializeContent();
   }, []);
 
-  // Fonction pour extraire le contenu avec capture des listes
   const extractPageContent = async (url: string): Promise<SiteContent | null> => {
     try {
       const response = await fetch(url, {
@@ -83,32 +79,26 @@ const AIAssistant: React.FC = () => {
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, 'text/html');
       
-      // Supprimer les éléments non pertinents
       doc.querySelectorAll('script, style, nav, header, footer, button, iframe, img, svg, .cookie-banner, .navigation, .menu, noscript').forEach(el => el.remove());
       
       const title = doc.querySelector('title')?.textContent || 
                     doc.querySelector('h1')?.textContent || 
                     url;
       
-      // Extraire le contenu principal avec structure
       const mainContent = doc.querySelector('main') || doc.querySelector('.content') || doc.querySelector('article') || doc.querySelector('body');
       
       const textNodes: string[] = [];
       
-      // Extraire les éléments avec leur contexte
       mainContent?.querySelectorAll('h1, h2, h3, h4, p, ul, ol, li, td, th, div').forEach(el => {
         const text = el.textContent?.trim();
         
-        // Ignorer les éléments trop courts ou non pertinents
         if (!text || text.length < 20 || text.match(/(Obtenir un Devis|En savoir plus|Cliquez ici|Cookie)/i)) {
           return;
         }
         
-        // Traiter les titres
         if (el.tagName.match(/H[1-4]/)) {
           textNodes.push(`\n### ${text}\n`);
         }
-        // Traiter les listes (ul/ol)
         else if (el.tagName === 'UL' || el.tagName === 'OL') {
           const listItems = Array.from(el.querySelectorAll('li'))
             .map(li => `• ${li.textContent?.trim()}`)
@@ -118,7 +108,6 @@ const AIAssistant: React.FC = () => {
             textNodes.push(listItems);
           }
         }
-        // Traiter les paragraphes et autres éléments
         else if (!el.closest('ul, ol') && text.length > 30) {
           textNodes.push(text);
         }
@@ -143,7 +132,6 @@ const AIAssistant: React.FC = () => {
     }
   };
 
-  // Indexation du site
   const indexSite = async () => {
     setIsIndexing(true);
     const indexed: SiteContent[] = [];
@@ -155,6 +143,7 @@ const AIAssistant: React.FC = () => {
       '/services',
       '/solutions',
       '/connectivity',
+      '/solution-de-connectivite',
       '/fibre',
       '/sd-wan',
       '/sdwan',
@@ -189,11 +178,116 @@ const AIAssistant: React.FC = () => {
     console.log(`✅ ${indexed.length} pages indexées avec succès`);
   };
 
-  // Recherche de similarité améliorée
+  // Détection du type de question
+  const detectQuestionType = (query: string): 'matrix' | 'general' | 'unclear' => {
+    const queryLower = query.toLowerCase();
+    
+    // Si trop court ou trop vague
+    if (query.trim().length < 3) {
+      return 'unclear';
+    }
+    
+    // ÉTAPE 1 : Détecter d'abord les questions CLAIREMENT GÉNÉRALES
+    const clearlyGeneralPatterns = [
+      // Connaissance générale
+      /tu connais|tu sais|connais(-| )tu|sais(-| )tu/,
+      /qui est|qu'est(-| )ce que|c'est quoi|définition de|explique(-| )moi/,
+      
+      // Lieux et géographie (NON liés aux télécoms)
+      /paris|londres|new york|tokyo|rome|berlin|madrid/,
+      /capitale de|ville de|pays|continent|océan/,
+      
+      // Culture et divertissement
+      /film|série|livre|musique|chanson|acteur|chanteur/,
+      /recette|cuisine|plat|restaurant|manger/,
+      /sport|football|basket|tennis|match|équipe/,
+      
+      // Temps et actualité
+      /météo|temps qu'il fait|température|date|heure|jour|année/,
+      /actualité|news|aujourd'hui|hier|demain/,
+      
+      // Science et histoire
+      /histoire de|historique|guerre|roi|président|empereur/,
+      /mathématique|physique|chimie|biologie|planète|espace/,
+      
+      // Technologie générale (non télécom)
+      /comment (faire|créer|programmer|coder|développer)/,
+      /python|javascript|java|html|css|react|code/,
+      
+      // Santé et bien-être
+      /santé|maladie|médecin|hôpital|symptôme|traitement/,
+      /sport|exercice|fitness|yoga|course/,
+      
+      // Voyage
+      /voyage|vacances|tourisme|visa|passeport|hôtel/
+    ];
+    
+    // Si c'est clairement une question générale, retourner immédiatement
+    const isClearlyGeneral = clearlyGeneralPatterns.some(pattern => pattern.test(queryLower));
+    if (isClearlyGeneral) {
+      return 'general';
+    }
+    
+    // ÉTAPE 2 : Détecter les mentions EXPLICITES de Matrix ou services télécoms
+    const explicitMatrixKeywords = [
+      'matrix', 'matrixconnect', 'matrix telecoms', 'matrixtelecom',
+      'votre entreprise', 'votre société', 'votre service', 'chez vous',
+      'vous proposez', 'vous offrez', 'vos solutions', 'vos tarifs'
+    ];
+    
+    const hasExplicitMatrix = explicitMatrixKeywords.some(keyword => queryLower.includes(keyword));
+    
+    // ÉTAPE 3 : Détecter les termes télécoms spécifiques
+    const telecomKeywords = [
+      'connectivité', 'fibre optique', 'mpls', 'vpn', 'sd-wan', 'sdwan',
+      'mssp', 'firewall', 'sécurité réseau', 'téléphonie ip', 'voip',
+      'interconnexion', 'bande passante', 'wan', 'lan',
+      'redondance', 'haute disponibilité', 'sla', 'qos',
+      'datacenter', 'data center'
+    ];
+    
+    const hasTelecomKeywords = telecomKeywords.some(keyword => queryLower.includes(keyword));
+    
+    // ÉTAPE 4 : Détecter les patterns de questions professionnelles
+    const professionalPatterns = [
+      /quelle (solution|offre) (de|pour) (connectivité|réseau|internet)/,
+      /comment (connecter|relier|sécuriser) (mes|nos) (sites|bureaux|agences)/,
+      /besoin (de|d'un|d'une) (solution|connexion|réseau) (professionnel|entreprise)/,
+      /problème (de|avec) (connexion|réseau|internet) (entreprise|bureau)/,
+      /devis (pour|de)|tarif|prix (de|pour) (connexion|fibre|mpls|vpn|sd-wan)/,
+      /contact.*\+237|téléphone.*\+237|appeler.*matrix/
+    ];
+    
+    const matchesProfessionalPattern = professionalPatterns.some(pattern => pattern.test(queryLower));
+    
+    // ÉTAPE 5 : Détecter les mots ambigus (peuvent être généraux OU télécoms)
+    const ambiguousTerms = [
+      'internet', 'réseau', 'connexion', 'débit', 'wifi', 'cloud',
+      'sécurité', 'entreprise', 'professionnel', 'b2b',
+      'cameroun', 'yaoundé', 'douala', 'prix', 'tarif', 'contact', 'service'
+    ];
+    
+    const hasAmbiguousTerm = ambiguousTerms.some(term => queryLower.includes(term));
+    
+    // DÉCISION FINALE
+    // Si mention explicite de Matrix OU termes télécoms spécifiques OU pattern professionnel
+    if (hasExplicitMatrix || hasTelecomKeywords || matchesProfessionalPattern) {
+      return 'matrix';
+    }
+    
+    // Si terme ambigu SANS contexte clair, demander précision
+    if (hasAmbiguousTerm && query.trim().split(/\s+/).length <= 4) {
+      return 'unclear';
+    }
+    
+    // Par défaut, considérer comme question générale
+    // (changement majeur : on privilégie GENERAL par défaut au lieu de MATRIX)
+    return 'general';
+  };
+
   const findRelevantContent = (query: string, topK: number = 3): string => {
     const queryLower = query.toLowerCase();
     
-    // Extraire les mots-clés significatifs
     const stopWords = ['quels', 'sont', 'les', 'des', 'une', 'pour', 'avec', 'dans', 'sur', 'est', 'que', 'qui', 'comment', 'pourquoi'];
     const keywords = queryLower
       .split(/\s+/)
@@ -204,25 +298,21 @@ const AIAssistant: React.FC = () => {
       const contentLower = page.content.toLowerCase();
       const titleLower = page.title.toLowerCase();
       
-      // Bonus si le titre contient le mot-clé
       keywords.forEach(keyword => {
         if (titleLower.includes(keyword)) {
           score += 20;
         }
       });
       
-      // Compter les occurrences de chaque mot-clé
       keywords.forEach(keyword => {
         const matches = (contentLower.match(new RegExp(keyword, 'g')) || []).length;
         score += matches * 3;
       });
       
-      // Bonus si la requête complète est trouvée
       if (contentLower.includes(queryLower)) {
         score += 15;
       }
       
-      // Bonus pour la proximité entre mots-clés
       if (keywords.length > 1) {
         keywords.forEach((kw1, i) => {
           keywords.slice(i + 1).forEach(kw2 => {
@@ -250,43 +340,93 @@ const AIAssistant: React.FC = () => {
     ).join('\n\n---\n\n');
   };
 
-  // Prompt système pour Groq (style Flask)
-  const getSystemPrompt = (): string => {
-    return `Tu es un assistant virtuel pour MatrixConnect, une entreprise de télécommunications privé au Cameroun. Ton rôle est d'aider les visiteurs à découvrir nos services et répondre à leurs questions.Fournis des réponses précises basées sur les informations du site www.matrixtelecoms.com.
-**RÈGLES DE RÉPONSE :**
-1. Utilise un ton professionnel et direct
-2. Évite les formules de politesse excessives ("Bonjour", "Merci", "N'hésitez pas")
-3. Fournis des réponses précises basées sur le contexte du site fourni
-4. Pour les détails techniques complexes, redirige vers : +237 242 13 95 45 ou info@matrixconnect.cm
-5. Réponds en français, de manière claire et concise (3-5 phrases maximum)
-6. Termine par un appel à l'action pertinent (contact, devis, démo)
+  const getSystemPrompt = (questionType: 'matrix' | 'general' | 'unclear'): string => {
+    if (questionType === 'general') {
+      return `Tu es un assistant virtuel intelligent. L'utilisateur te pose une question générale qui n'est pas liée à MatrixConnect ou aux télécommunications.
+
+**RÈGLES :**
+1. Réponds comme un assistant général compétent et utile
+2. Sois professionnel, clair et concis
+3. Si la question nécessite des informations actualisées, indique-le
+4. Reste factuel et objectif
+5. Réponds en français de manière naturelle
+
+Réponds directement à la question posée.`;
+    }
+    
+    if (questionType === 'unclear') {
+      return `Tu es un assistant virtuel pour MatrixConnect. L'utilisateur a posé une question peu claire ou trop vague.
+
+**RÈGLES :**
+1. Demande poliment des précisions
+2. Propose des options si tu peux deviner l'intention
+3. Reste professionnel et aidant
+4. Suggère des sujets populaires si pertinent
+
+Aide l'utilisateur à formuler sa question.`;
+    }
+    
+    // Matrix-specific prompt
+    return `Tu es un assistant virtuel intelligent pour MatrixConnect, entreprise de télécommunications au Cameroun.
+
+**TON RÔLE :**
+Analyser si la question concerne :
+1. **MatrixConnect/télécoms** → Utilise UNIQUEMENT le contexte fourni du site
+2. **Question générale** → Réponds comme assistant général
+3. **Question peu claire** → Demande des précisions
+
+**POUR LES QUESTIONS MATRIXCONNECT :**
+✅ Utilise UNIQUEMENT les informations du contexte fourni
+✅ Mentionne les services pertinents (Connectivité, SD-WAN, MPLS, VPN, Sécurité MSSP, Fibre)
+✅ Reste factuel - n'invente JAMAIS de caractéristiques
+✅ Ton professionnel et direct
+✅ Termine par un appel à l'action (contact, devis)
+✅ 3-5 phrases maximum
 
 **INFORMATIONS CLÉS MATRIXCONNECT :**
-- Fondation : 1997, filiale du Groupe ICCNET (créé en 1995)
-- Expérience : 28 ans d'expertise télécom B2B
-- Mission : "Connecting People. Inspiring Solutions"
-- Infrastructure : Jusqu'à 80 Gbps, haute disponibilité
-- Services : Connectivité haut débit, SD-WAN, Sécurité MSSP, MPLS, VPN, Téléphonie IP
+• Fondation : 1997, filiale ICCNET (créé 1995)
+• Expérience : 28 ans en télécom B2B
+• Infrastructure : Jusqu'à 80 Gbps
+• Services principaux : 
+  - **Connectivité** : Fibre optique dédiée, internet haut débit, redondance, haute disponibilité
+  - **SD-WAN** : Optimisation WAN, gestion centralisée, sécurité intégrée, économies 40%
+  - **MPLS** : Interconnexion multi-sites, réseau privé sécurisé, QoS garantie
+  - **VPN** : Connexions distantes sécurisées, chiffrement robuste, accès nomade
+  - **Sécurité MSSP** : SOC 24/7, firewalls nouvelle génération, détection intrusions
+  - **Téléphonie IP** : IPBX, SDA, mobilité, réduction coûts 60%
 
 **COORDONNÉES :**
-📍 Yaoundé : 4124 Yaoundé | ☎️ +237 242 13 95 45
-📍 Douala : 24122 Douala | ☎️ +237 233 43 88 18
+📍 Yaoundé : +237 242 13 95 45 | 📍 Douala : +237 233 43 88 18
 📧 info@matrixconnect.cm
 
-Réponds de manière naturelle, professionnelle et orientée action.`;
+Réponds de manière professionnelle, précise et orientée action.`;
   };
 
-  // Appel à l'API Groq
   const sendToGroq = async (userMessage: string): Promise<string> => {
     try {
+      const questionType = detectQuestionType(userMessage);
+      
+      // Pour les questions peu claires
+      if (questionType === 'unclear') {
+        return 'Pouvez-vous préciser votre question ? Je peux vous aider sur :\n\n• Les solutions de connectivité MatrixConnect\n• Les services télécom (SD-WAN, MPLS, VPN, Sécurité)\n• Les tarifs et devis\n• Le contact et informations pratiques\n• Ou toute autre question générale\n\nComment puis-je vous aider ?';
+      }
+      
       const apiKey = process.env.NEXT_PUBLIC_GROQ_API_KEY;
       
       if (!apiKey || apiKey === 'DEMO_KEY') {
         console.warn('⚠️ Mode démo - Configurez NEXT_PUBLIC_GROQ_API_KEY');
-        return getFallbackResponse(userMessage);
+        return getFallbackResponse(userMessage, questionType);
       }
 
-      const relevantContext = findRelevantContent(userMessage);
+      const systemPrompt = getSystemPrompt(questionType);
+      
+      let userPrompt = userMessage;
+      
+      // Ajouter le contexte seulement pour les questions Matrix
+      if (questionType === 'matrix') {
+        const relevantContext = findRelevantContent(userMessage);
+        userPrompt = `CONTEXTE DU SITE MATRIXCONNECT :\n${relevantContext}\n\n---\n\nQUESTION DU VISITEUR :\n${userMessage}`;
+      }
 
       const response = await fetch(GROQ_API_ENDPOINT, {
         method: 'POST',
@@ -297,53 +437,46 @@ Réponds de manière naturelle, professionnelle et orientée action.`;
         body: JSON.stringify({
           model: GROQ_MODEL,
           messages: [
-            {
-              role: 'system',
-              content: getSystemPrompt()
-            },
-            {
-              role: 'user',
-              content: `CONTEXTE EXTRAIT DU SITE :\n${relevantContext}\n\nQUESTION DU VISITEUR :\n${userMessage}`
-            }
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt }
           ],
-          temperature: 0.7,
+          temperature: questionType === 'general' ? 0.8 : 0.7,
           max_tokens: 800,
           top_p: 0.9
         })
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        
-        if (response.status === 429) {
-          console.warn('⚠️ Quota Groq dépassé');
-          return getFallbackResponse(userMessage);
+        if (response.status === 429 || response.status === 401) {
+          return getFallbackResponse(userMessage, questionType);
         }
-        
-        if (response.status === 401) {
-          console.error('❌ Clé API Groq invalide');
-          return getFallbackResponse(userMessage);
-        }
-        
-        throw new Error(`Erreur API Groq: ${response.status} - ${JSON.stringify(errorData)}`);
+        throw new Error(`Erreur API Groq: ${response.status}`);
       }
 
       const data = await response.json();
       
-      if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-        throw new Error('Réponse API Groq invalide');
+      if (!data.choices?.[0]?.message?.content) {
+        throw new Error('Réponse API invalide');
       }
       
       return data.choices[0].message.content;
     } catch (error) {
       console.error('Erreur Groq:', error);
-      return getFallbackResponse(userMessage);
+      const questionType = detectQuestionType(userMessage);
+      return getFallbackResponse(userMessage, questionType);
     }
   };
 
-  // Réponses de secours détaillées
-  const getFallbackResponse = (userMessage: string): string => {
+  const getFallbackResponse = (userMessage: string, questionType: 'matrix' | 'general' | 'unclear'): string => {
+    if (questionType === 'general') {
+      return 'Je ne peux pas répondre à cette question en mode hors ligne. Pour les questions générales, veuillez réessayer plus tard ou consultez des ressources en ligne spécialisées. Je reste disponible pour toute question sur MatrixConnect et nos services télécom !';
+    }
+    
     const msg = userMessage.toLowerCase();
+    
+    if (msg.match(/connectivité|solution.*connectivité|internet|connexion|bande passante/)) {
+      return 'MatrixConnect propose des solutions de connectivité haute performance pour entreprises :\n\n• **Accès Internet dédié** : Fibre optique jusqu\'à 80 Gbps, symétrique et ultra-fiable\n• **Redondance** : Liens de secours automatiques (4G/5G, Faisceau Hertzien)\n• **Haute disponibilité** : Infrastructure garantissant la continuité de service\n• **Sécurité intégrée** : Protection réseau et chiffrement\n• **Scalabilité** : Solutions évolutives selon vos besoins\n\nIdéal pour : réseaux d\'entreprise modernes, cloud, VoIP, vidéoconférence. Quelle bande passante recherchez-vous ? 📞 +237 242 13 95 45';
+    }
     
     if (msg.match(/sécurité|mssp|cyberattaque|firewall|protection/)) {
       return 'Notre service MSSP offre une protection 24/7 avec un SOC dédié. Nous déployons des firewalls nouvelle génération, détectons les intrusions en temps réel et bloquons les attaques DDoS. Avec 28 ans d\'expertise, nous sécurisons les infrastructures des entreprises camerounaises. Contactez-nous pour un audit gratuit : +237 242 13 95 45.';
@@ -354,15 +487,11 @@ Réponds de manière naturelle, professionnelle et orientée action.`;
     }
 
     if (msg.match(/mpls|interconnexion|multi-sites/)) {
-      return 'Le MPLS interconnecte l\'ensemble de vos sites (siège, agences, data centers) au sein d\'un réseau privé, étanche à Internet. Avantages clés :\n\n• Sécurité et confidentialité des données\n• Qualité de Service (QoS) pour applications critiques\n• Gestion centralisée et simplifiée du réseau\n• Haute disponibilité et redondance\n• Performances garanties (SLA)\n• Évolutivité pour accompagner votre croissance\n\nC\'est la colonne vertébrale de votre système d\'information. Infrastructure 80 Gbps disponible. Combien de sites souhaitez-vous connecter ? Appelez +237 242 13 95 45.';
+      return 'Le MPLS interconnecte l\'ensemble de vos sites (siège, agences, data centers) au sein d\'un réseau privé sécurisé. Avantages : confidentialité des données, QoS garantie, gestion centralisée, haute disponibilité, performances optimales. Infrastructure 80 Gbps disponible. Combien de sites souhaitez-vous connecter ? 📞 +237 242 13 95 45';
     }
     
     if (msg.match(/vpn/)) {
-      return 'Nos solutions VPN sécurisent vos connexions distantes et interconnectent vos sites via Internet. Chiffrement robuste, accès nomade pour vos collaborateurs, et intégration avec votre infrastructure existante. Alternative économique au MPLS pour certains cas d\'usage. Besoin d\'une analyse de vos besoins ? Contact : +237 233 43 88 18.';
-    }
-    
-    if (msg.match(/fibre|connectivité|internet|connexion|bande passante/)) {
-      return 'Fibre optique dédiée jusqu\'à 80 Gbps, symétrique et ultra-fiable. Pour les zones non fibrées : Faisceau Hertzien et VSAT disponibles. Solutions de backup 4G/5G automatiques pour garantir la continuité. Quelle bande passante recherchez-vous ? Contact : +237 233 43 88 18.';
+      return 'Nos solutions VPN sécurisent vos connexions distantes et interconnectent vos sites via Internet. Chiffrement robuste, accès nomade pour vos collaborateurs, et intégration avec votre infrastructure existante. Alternative économique au MPLS pour certains cas d\'usage. Besoin d\'une analyse ? 📞 +237 233 43 88 18';
     }
 
     if (msg.match(/prix|tarif|coût|devis|budget/)) {
@@ -370,21 +499,12 @@ Réponds de manière naturelle, professionnelle et orientée action.`;
     }
 
     if (msg.match(/contact|joindre|appeler|rendez-vous|téléphone/)) {
-      return 'Coordonnées MatrixConnect :\n📍 Yaoundé : +237 242 13 95 45\n📍 Douala : +237 233 43 88 18\n📧 info@matrixconnect.cm\nRappel sous 24h garanti. Infrastructure 80 Gbps à votre service depuis 1997. Préférez-vous un rendez-vous en agence ou par téléphone ?';
+      return 'Coordonnées MatrixConnect :\n📍 Yaoundé : +237 242 13 95 45\n📍 Douala : +237 233 43 88 18\n📧 info@matrixconnect.cm\nRappel sous 24h garanti. Infrastructure 80 Gbps à votre service depuis 1997.';
     }
 
-    if (msg.match(/téléphonie|voip|ip|communication|pbx/)) {
-      return 'Solutions de téléphonie IP complètes : IPBX virtuels ou physiques, numéros SDA, appels illimités intra-réseau, mobilité totale. Réduisez vos coûts de communication jusqu\'à 60%. Demandez une démo : +237 242 13 95 45.';
-    }
-    
-    if (msg.match(/vidéo|visio|conférence|réunion/)) {
-      return 'Solutions de vidéoconférence professionnelles : qualité HD, partage d\'écran, enregistrement des sessions. Intégration avec vos outils existants et infrastructure optimisée pour la collaboration à distance. Contact : info@matrixconnect.cm.';
-    }
-
-    return 'MatrixConnect, leader télécom B2B au Cameroun depuis 1997. Infrastructure 80 Gbps pour : Connectivité très haut débit, SD-WAN intelligent, Sécurité MSSP 24/7, Interconnexion multi-sites. Filiale du Groupe ICCNET. Comment puis-je vous aider concrètement ? 📞 +237 242 13 95 45';
+    return 'MatrixConnect, leader télécom B2B au Cameroun depuis 1997. Infrastructure 80 Gbps pour : Connectivité très haut débit, SD-WAN intelligent, Sécurité MSSP 24/7, Interconnexion multi-sites. Comment puis-je vous aider ? 📞 +237 242 13 95 45';
   };
 
-  // Envoi du message
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
 
