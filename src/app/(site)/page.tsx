@@ -9,6 +9,8 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const findImage = (id: string) => PlaceHolderImages.find((img) => img.id === id)!;
 
+
+
 export default function Home() {
   return (
     <>

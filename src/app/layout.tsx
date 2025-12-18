@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: 'MatrixConnect - Solutions de Télécommunications',
   description:
     'MatrixConnect est votre partenaire de confiance pour des solutions de connectivité, d’interconnexion, de sécurité MSSP et de SD-WAN.',
+    verification: {
+    google: 'cK8NeArJyjIbChCLr927PV33wySXr7iXcQTJRbTnSTo',
+  },
 };
 
 export default function RootLayout({
