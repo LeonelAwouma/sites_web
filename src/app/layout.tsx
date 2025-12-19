@@ -8,9 +8,8 @@ export const metadata: Metadata = {
   title: 'MatrixConnect - Solutions de Télécommunications',
   description:
     'MatrixConnect est votre partenaire de confiance pour des solutions de connectivité, d’interconnexion, de sécurité MSSP et de SD-WAN.',
-    verification: {
-    google: 'cK8NeArJyjIbChCLr927PV33wySXr7iXcQTJRbTnSTo',
-  },
+    //verification: {
+ // },
 };
 
 export default function RootLayout({
@@ -21,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <meta name="google-site-verification" content="Y14kX2yWfRXcBUvSoh5bcATYXP9jvUmh1Hdb3HmaSLI" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
